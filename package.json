@@ -15,6 +15,7 @@
     "coffee-script": "*",
     "watchify": "*",
     "mongojs": "*",
-    "async": "*"
+    "async": "*",
+    "geo-distance": "*"
   }
 }

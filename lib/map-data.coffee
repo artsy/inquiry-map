@@ -1,5 +1,5 @@
 #
-# Map reduces data from gravity_development into something the map can use.
+# Maps data from the gravity_development mongo db into something the map can use.
 #
 
 fs = require 'fs'
