@@ -2,20 +2,21 @@
   "name": "inquiry-map",
   "version": "0.0.1",
   "scripts": {
-    "c": "browserify lib/index.coffee -t coffeeify > public/bundle.js",
-    "w": "watchify lib/index.coffee  -t coffeeify -o public/bundle.js",
-    "d": "coffee  lib/map-data.coffee"
+    "coffee": "browserify lib/index.coffee -t coffeeify > public/bundle.js",
+    "watch": "watchify lib/index.coffee  -t coffeeify -o public/bundle.js",
+    "data": "coffee  lib/map-data.coffee"
   },
   "dependencies": {
-    "d3": "*",
-    "topojson": "*",
-    "datamaps": "git://github.com/markmarkoh/datamaps.git",
-    "browserify": "*",
-    "coffeeify": "*",
-    "coffee-script": "*",
-    "watchify": "*",
-    "mongojs": "*",
     "async": "*",
-    "geo-distance": "*"
+    "browserify": "*",
+    "coffee-script": "*",
+    "coffeeify": "*",
+    "d3": "*",
+    "datamaps": "git://github.com/markmarkoh/datamaps.git",
+    "geo-distance": "*",
+    "mongojs": "*",
+    "pg": "^6.1.2",
+    "topojson": "*",
+    "watchify": "*"
   }
 }
