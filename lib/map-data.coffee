@@ -5,6 +5,7 @@
 fs = require 'fs'
 async = require 'async'
 mongojs = require "mongojs"
+crypto = require 'crypto'
 
 pg = require 'pg'
 
@@ -28,6 +29,7 @@ write_all_data =  () ->
 # We need to be cautious around node process memory limits
 # so we move all data into this global
 all_data = []
+md5s = []
 show_results = false
 
 db.on 'error', (err) ->
@@ -79,7 +81,15 @@ pgClient.connect (err) ->
               destination:
                 latitude: res[1][1]
                 longitude: res[1][0]
-            all_data.push(data)
+              created_at: inquiry.created_at
+
+            md5 = "" + data.origin.latitude + data.origin.longitude + data.destination.latitude + data.destination.longitude
+            hash = crypto.createHash('md5').update(md5).digest("hex");
+
+            unless md5s.includes(hash) 
+              all_data.push(data)
+              md5s.push(hash)
+
             process.stdout.write("X") if show_results
 
           nextRow()

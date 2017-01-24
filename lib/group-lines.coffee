@@ -45,6 +45,9 @@ for arc in longDistanceArcs
   filteredArcs.push arc if dist < FILTERED_RADIUS
 console.log "There are #{filteredArcs.length} inquiries going to filtered city"
 
+console.log("About to start looking at grouping the arcs, warning, this will take a very, very long time.")
+console.log("It took 13500.87s last time, 4 hours on a Mac Pro.")
+
 # Find the arcs that have less than 10 neighboring arcs
 grouppedArcs = {}
 for arc, i in filteredArcs
