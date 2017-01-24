@@ -17,7 +17,19 @@ db = mongojs "mongodb://localhost:27017/gravity_development", [
   "artworks"
 ]
 
+# Writes the JSON from `all_data` to a JSON file
+
+write_all_data =  () -> 
+  json = JSON.stringify (for data in all_data when data?.origin?.latitude and data?.destination?.latitude
+    origin: data.origin
+    destination: data.destination
+  )
+  fs.writeFileSync __dirname + '/arcs.json', json
+
+# We need to be cautious around node process memory limits
+# so we move all data into this global
 all_data = []
+show_results = false
 
 db.on 'error', (err) ->
   console.log('mongo error', err)
@@ -25,30 +37,11 @@ db.on 'error', (err) ->
 pgClient.connect (err) -> 
   console.error(err)  if err
 
-  # add LIMIT 10 to do work
-  pgClient.query "SELECT to_id, to_type, from_id, from_type, created_at FROM conversations WHERE to_id != '' AND from_id != ''"
+  # add `LIMIT 10` to do dev
+  sql = "SELECT to_id, to_type, from_id, from_type, created_at FROM conversations WHERE to_id != '' AND from_id != ''"
 
-  query.on 'end', (result) -> 
-    console.log(result.rows.length + ' rows were received');
-      json = JSON.stringify (for data in res when data?.origin?.latitude and data?.destination?.latitude
-        origin: data.origin
-        destination: data.destination
-      )
-      fs.writeFileSync __dirname + '/arcs.json', json
-      process.exit()
-
-    pgClient.end()
-
-  query.on 'row', (row, result) -> 
-    result.addRow(row);
-
-
-   (err, inquiries) ->
-
-    # Drop the old collection and query inquiries
-    queries = for inquiry in inquiries.rows
-      ((inquiry) -> (callback) ->
-
+  pgClient.query sql, (err, results) ->
+      async.eachLimit results.rows, 5, (inquiry, nextRow) ->
         # Dig down the relations and pull out user/partner coordinates
         async.parallel [
           (cb) ->
@@ -75,20 +68,26 @@ pgClient.connect (err) ->
             else
               cb()
         ], (err, res) ->
-
           # Insert a new coordinate
           unless res[0]? and res[1]?
-            console.log("user: " + res[0], "partner:" + res[1])
-            console.log '.'
-            return callback()
-          data =
-            origin:
-              latitude: res[0][1]
-              longitude: res[0][0]
-            destination:
-              latitude: res[1][1]
-              longitude: res[1][0]
-          console.log "Found! ", data
-          callback null, data
-      )(inquiry)
-   
+            process.stdout.write(".") if show_results
+            
+          else
+            data =
+              origin:
+                latitude: res[0][1]
+                longitude: res[0][0]
+              destination:
+                latitude: res[1][1]
+                longitude: res[1][0]
+            all_data.push(data)
+            process.stdout.write("X") if show_results
+
+          nextRow()
+      
+      # The completion  block for the each
+      , (err, result) -> 
+        console.log("\n Shipped to libs/arcs.json")
+        write_all_data()
+        process.exit()
+          
