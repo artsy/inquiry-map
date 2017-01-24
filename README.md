@@ -6,18 +6,18 @@ Generates a map visualization of Artsy inquiry location to gallery location. Use
 
 Copy the following collections from Artsy database to your local `gravity_development` mongo.
 
-* artwork_inquiry_requests
-* partner_locations
-* partners
-* users
-* artworks
+* `partner_locations`
+* `partners`
+* `users`
+
+Get a backup of the impulse production database from heroku, and move it into a local postgres setup in `artsy-impulse-production`
 
 Install node modules
 
-`npm install`
+`yarn install`
 
 Generate the geo points data and output the bundle
 
-`npm run d && npm run c`
+`yarn run debug && yarn run cofee`
 
 Open public/index.html

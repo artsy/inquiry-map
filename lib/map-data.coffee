@@ -14,7 +14,6 @@ db = mongojs "mongodb://localhost:27017/gravity_development", [
   "partner_locations"
   "partners"
   "users"
-  "artworks"
 ]
 
 # Writes the JSON from `all_data` to a JSON file
