@@ -16,6 +16,7 @@ dump.rdb
 .env
 .env.ignore
 node_modules
+lib/jsons
 lib/arcs.json
 lib/above-avg-arcs.json
 lib/groupped-arcs.json

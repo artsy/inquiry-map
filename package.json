@@ -2,7 +2,7 @@
   "name": "inquiry-map",
   "version": "0.0.1",
   "scripts": {
-    "coffee": "browserify lib/index.coffee -t coffeeify > public/bundle.js",
+    "bundle": "browserify lib/index.coffee -t coffeeify > public/bundle.js",
     "watch": "watchify lib/index.coffee  -t coffeeify -o public/bundle.js",
     "data": "coffee lib/map-data.coffee",
     "derived": "coffee lib/group-lines.coffee"

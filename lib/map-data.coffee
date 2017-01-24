@@ -22,7 +22,8 @@ db = mongojs "mongodb://localhost:27017/gravity_development", [
 write_all_data =  () -> 
   json = JSON.stringify (for data in all_data when data?.origin?.latitude and data?.destination?.latitude
     origin: data.origin
-    destination: data.destination
+    destination: data.destination,
+    created_at: data.created_at
   )
   fs.writeFileSync __dirname + '/arcs.json', json
 
