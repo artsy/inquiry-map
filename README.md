@@ -1,5 +1,7 @@
 # inquiry-map
 
+**Deprecated: All code has been migrated into [artsy/partner-map](https://github.com/artsy/partner-map/pull/3) **
+
 Generates a map visualization of Artsy inquiry location to gallery location. Used internally at Artsy and not useful to general public—but open source by default!
 
 ## Setup
